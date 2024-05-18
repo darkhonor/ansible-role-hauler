@@ -1,0 +1,89 @@
+---
+- name: Install Required Packages (DNF)
+  ansible.builtin.dnf:
+    name: 
+      - zstd
+      - rsync
+      - jq
+  when: 
+    - "ansible_facts['distribution'] in ['RedHat', 'CentOS', 'Rocky', 'AlmaLinux', 'OracleLinux']"
+    - "ansible_facts['distribution_major_version'] >= \"8\""
+- name: Install Required Packages (Yum)
+  ansible.builtin.yum:
+    name: 
+      - zstd
+      - rsync
+      - jq
+  when: 
+    - "ansible_facts['distribution'] in ['RedHat', 'CentOS', 'Rocky', 'AlmaLinux', 'OracleLinux']"
+    - "ansible_facts['distribution_major_version'] <= \"7\""
+- name: Install Required Packages (Apt)
+  ansible.builtin.apt:
+    name: 
+      - zstd
+      - rsync
+      - jq
+  when: "ansible_facts['distribution'] in ['Ubuntu', 'Debian']"
+- name: Download Hauler Version
+  ansible.builtin.get_url:
+    url: '{{ hauler_download }}'
+    dest: /tmp
+    mode: '0644'
+    owner: root
+    group: root
+- name: Extract the Archive
+  ansible.builtin.unarchive:
+    src: "/tmp/hauler_{{ hauler_version }}_{{ hauler_platform }}_{{ hauler_arch }}.tar.gz"
+    dest: /usr/local/bin/
+    remote_src: true
+    owner: root
+    group: root 
+    mode: '0755'
+    setype: usr_t
+- name: Create Hauler Service File
+  ansible.builtin.template:
+    src: hauler.service.j2
+    dest: /etc/systemd/system/hauler@.service
+    owner: root 
+    group: root
+    mode: '0644'
+    seuser: system_u
+    setype: systemd_unit_file_t
+  when:
+    - create_hauler_service
+  notify:
+    - reload_daemon
+- name: Create Hauler Service Directory
+  ansible.builtin.file:
+    path: '{{ hauler_home }}'
+    owner: root
+    group: root 
+    mode: '0755'
+    state: directory
+  when:
+    - create_hauler_service
+- name: Create Hauler Store Folder
+  ansible.builtin.file:
+    path: "{{ hauler_home }}/{{ hauler_store_folder }}"
+    owner: root
+    group: root 
+    mode: '0755'
+    state: directory
+  when:
+    - create_hauler_service
+- name: Enable File Server
+  ansible.builtin.service:
+    name: hauler@fileserver
+    enabled: true
+    state: started
+  when:
+    - enable_fileserver
+    - create_hauler_service
+- name: Enable Container Registry
+  ansible.builtin.service:
+    name: hauler@registry
+    enabled: true
+    state: started
+  when:
+    - enable_registry
+    - create_hauler_service

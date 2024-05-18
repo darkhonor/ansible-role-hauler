@@ -1,2 +1,5 @@
 ---
 # handlers file for ansible-role-hauler
+- name: reload_daemon
+  ansible.builtin.systemd:
+    daemon_reload: true

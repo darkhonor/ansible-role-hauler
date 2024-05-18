@@ -1,2 +1,12 @@
 ---
-# defaults file for ansible-role-hauler
+# defaults file for ansible-role-ansible
+airgap: false
+trust_repository_certs: true
+hauler_version: 1.0.3
+hauler_platform: linux
+hauler_arch: amd64
+hauler_download: "https://github.com/rancherfederal/hauler/releases/download/v{{ hauler_version }}/hauler_{{ hauler_version }}_{{ hauler_platform }}_{{ hauler_arch }}.tar.gz"
+hauler_home: /opt/hauler
+create_hauler_service: false
+enable_fileserver: false
+enable_registry: false

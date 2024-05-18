@@ -1,0 +1,11 @@
+# /etc/systemd/system/hauler.service
+[Unit]
+Description=Hauler Serve %I Service
+
+[Service]
+Environment="HOME={{ hauler_home }}"
+ExecStart={{ hauler_install_bin_path }}/hauler store serve %i -s {{ hauler_home }}/{{ hauler_store_folder }}
+WorkingDirectory={{ hauler_home }}
+
+[Install]
+WantedBy=multi-user.target

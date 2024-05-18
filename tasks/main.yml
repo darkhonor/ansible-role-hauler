@@ -1,2 +1,5 @@
 ---
 # tasks file for ansible-role-hauler
+- name: "Prepare the Linux guest operating system."
+  include_tasks: linux.yml
+  when: "ansible_facts['system'] in ['Linux']"

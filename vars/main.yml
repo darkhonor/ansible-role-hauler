@@ -1,2 +1,4 @@
 ---
 # vars file for ansible-role-hauler
+hauler_install_bin_path: /usr/local/bin
+hauler_store_folder: "store"

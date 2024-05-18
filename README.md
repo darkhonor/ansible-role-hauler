@@ -1,38 +1,49 @@
-Role Name
-=========
+# Ansible Role: Hauler
 
-A brief description of the role goes here.
+Installs the Rancher Hauler application and (if required) configure the web and
+registry server services to run on startup.  Can support an airgap environment.
 
-Requirements
-------------
+**THANK YOU** to [Andy Clemenko](https://github.com/clemenko) for the fantastic
+[Use Hauler to Air Gap the Rancher Stack](https://github.com/clemenko/rke_airgap_install/tree/main)
+project that demonstrated how [Hauler](https://rancherfederal.github.io/hauler-docs/)
+can be used in an airgap environment and as a service target on a Linux
+system. Please check that projet out!
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Requirements
 
-Role Variables
---------------
+None
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Role Variables
 
-Dependencies
-------------
+You can modify any of the following variables as you wish in the role's `defaults/main.yml`:
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* `airgap`: Boolean if the target is in an airgap'd environment (Default: `false`)
+* `trust_repository_certs`: Boolean if the source repository's certificate is trusted by the target (Default: `true`)
 
-Example Playbook
-----------------
+## Dependencies
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+None
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+## Example Playbook
 
-License
--------
+Here is an example playbook using this role:
 
-BSD
+```yaml
+- name: Configure workstations
+  become: true
+  become_method: sudo
+  gather_facts: true
+  hosts: all
+  roles:
+    - role: hauler
+      airgap: true
+      trust_repository_certs: false
+```
 
-Author Information
-------------------
+## License
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+MIT
+
+## Author Information
+
+Alex Ackerman, GitHub @darkhonor
