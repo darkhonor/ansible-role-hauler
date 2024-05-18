@@ -3,7 +3,7 @@ galaxy_info:
   description: Ansible role to install and configure Rancher Hauler on a system
   role_name: hauler
 
-  issue_tracker_url: https://github.com/darkhonor/ansible-role-ansible/issues
+  issue_tracker_url: https://github.com/darkhonor/ansible-role-hauler/issues
 
   license: MIT
 
