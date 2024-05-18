@@ -1,0 +1,24 @@
+galaxy_info:
+  author: Alex Ackerman
+  description: Ansible role to install and configure Rancher Hauler on a system
+  role_name: hauler
+
+  issue_tracker_url: https://github.com/darkhonor/ansible-role-ansible/issues
+
+  license: MIT
+
+  min_ansible_version: '2.10'
+
+  platforms:
+  - name: EL
+    versions:
+    - '8'
+    - '9'
+  - name: OracleLinux
+    versions:
+    - '8'
+    - '9'
+
+  galaxy_tags: []
+
+dependencies: []
