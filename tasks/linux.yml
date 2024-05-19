@@ -71,7 +71,7 @@
     state: directory
   when:
     - create_hauler_service
-- name: Enable File Server
+- name: Enable Web Server
   ansible.builtin.service:
     name: hauler@fileserver
     enabled: true
@@ -87,3 +87,21 @@
   when:
     - enable_registry
     - create_hauler_service
+- name: Open Firewall Port for Web Service
+  ansible.posix.firewalld:
+    port: '{{ hauler_web_server_port }}'
+    permanent: true
+    state: enabled
+  when:
+    - enable_fileserver
+    - create_hauler_service
+    - configure_firewall
+- name: Open Firewall Port for Container Registry
+  ansible.posix.firewalld:
+    port: '{{ hauler_registry_port }}'
+    permanent: true
+    state: enabled
+  when:
+    - enable_registry
+    - create_hauler_service
+    - configure_firewall

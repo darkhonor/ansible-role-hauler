@@ -10,3 +10,4 @@ hauler_home: /opt/hauler
 create_hauler_service: false
 enable_fileserver: false
 enable_registry: false
+configure_firewall: true
